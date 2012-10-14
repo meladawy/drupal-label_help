@@ -1,0 +1,48 @@
+<?php
+
+function better_text_format_form_alter(&$form, &$form_state, $form_id) {
+  foreach ($form as $key => $item) {
+    if (is_array($item) && $item['#type'] == 'container' && $item['und'][0]['#type'] == 'text_format') {
+      $form[$key]['und'][0]['#theme_options'] = array(
+        'description at top' => $item['und'][0]['#description'],
+      );
+      $form[$key]['und'][0]['#description'] = '';
+    }
+  }
+}
+
+/**
+ * implements hook_theme_registry_alter
+ */ 
+function better_text_format_theme_registry_alter(&$theme_registry){
+  
+  // set our custom function for theming form_element_label
+  
+  // duplicate the original theme hook, under a new.  This
+  // will allow us to 'wrap' the theme function without
+  // breaking it.
+  $theme_registry['form_element_label_x'] = 
+      $theme_registry['form_element_label'];
+
+  // because we don't need to count on drupal to re-load this file
+  // we're going to only override the 'function' key
+  // and leave the 'theme path' etc. to the core setting
+  // to avoid potential problems down the road if
+  // core changes.
+  $theme_registry['form_element_label']['function'] = 
+      'better_text_format_theme_form_element_label';
+  
+}
+
+function better_text_format_theme_form_element_label($variables){
+  // Print description at top of field outpout. Because of jujitsu happening in
+  // fapi theming/wrapping, ctools and WYSIWYG, we have to jump through some hoops 
+  // to pull this off.
+  $desc = '';
+  if( isset( $variables['element']['#theme_options']['description at top'] ) ){
+    $desc = '<div class="description">' . $variables['element']['#theme_options']['description at top'] . '</div>';
+  }
+
+  // pass element through the "real" theme hook
+  return theme( 'form_element_label_x' , $variables) . $desc;
+}

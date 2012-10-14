@@ -1,0 +1,7 @@
+name = Better Text Format Form
+description = Moves the help text directly below the label for textarea fields 
+core = 7.x
+
+; File registry
+files[] = better_text_format.module
+
