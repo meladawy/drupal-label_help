@@ -99,7 +99,7 @@ function label_help_theme_registry_alter(&$theme_registry) {
  */
 function label_help_theme_form_element_label($variables) {
   $desc = '';
-  if (isset($variables['element']['#theme_options']['description at top'])) {
+  if (isset($variables['element']['#theme_options']['description at top']) && !empty($variables['element']['#theme_options']['description at top'])) {
     $desc = '<div class="description">' . t($variables['element']['#theme_options']['description at top']) . '</div>';
   }
 
