@@ -30,9 +30,9 @@ function label_help_form_alter(&$form, &$form_state, $form_id) {
       // that are specifically configured.
       if (isset($item['#type']) && $item['#type'] == 'container' && isset($item[$item['#language']][0])) {
         // For reasons best known to the lunatics who designed the Forms API,
-        // $form[$key][LANGUAGE_NONE][0]['#theme_options'] has to be set to get
+        // $form[$key][$item['#language']][0]['#theme_options'] has to be set to get
         // this working for textarea fields, and
-        // form[$key][LANGUAGE_NONE][0]['value']['#theme_options'] has to be set
+        // form[$key][$item['#language']][0]['value']['#theme_options'] has to be set
         // to get this working for one-line text fields.
         $form[$key][$item['#language']][0]['#theme_options'] = $form[$key][$item['#language']][0]['value']['#theme_options'] = $theme_option;
       }
