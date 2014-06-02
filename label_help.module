@@ -32,9 +32,23 @@ function label_help_form_alter(&$form, &$form_state, $form_id) {
         // For reasons best known to the lunatics who designed the Forms API,
         // $form[$key][$item['#language']][0]['#theme_options'] has to be set to get
         // this working for textarea fields, and
-        // form[$key][$item['#language']][0]['value']['#theme_options']
-        // has to be set to get this working for one-line text fields.
-        $form[$key][$item['#language']][0]['#theme_options'] = $form[$key][$item['#language']][0]['value']['#theme_options'] = $theme_option;
+        // form[$key][$item['#language']][0]['value']['#theme_options'] has to be set
+        // to get this working for one-line text fields, and
+        // form[$key][$item['#language']][0]['default']['#theme_options'] has to be set
+        // to get this working for some other fields.
+        if (isset($form[$key][$item['#language']][0]['default'])) {
+          $form[$key][$item['#language']][0]['default']['#theme_options'] = $theme_option;
+        }
+        elseif (isset($form[$key][$item['#language']][0]['value'])) {
+          $form[$key][$item['#language']][0]['value']['#theme_options'] = $theme_option;
+        }
+        // Oh, and here's what you do for entity references. That's different too. Sheesh!
+        elseif (isset($form[$key][$item['#language']][0]['target_id'])) {
+          $form[$key][$item['#language']][0]['target_id']['#theme_options'] = $theme_option;
+        }
+        else {
+          $form[$key][$item['#language']][0]['#theme_options'] = $theme_option;
+        }
       }
       // Move comments to the top for other field forms that
       // are specifically configured.
