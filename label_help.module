@@ -46,6 +46,10 @@ function label_help_form_alter(&$form, &$form_state, $form_id) {
         elseif (isset($form[$key][$item['#language']][0]['target_id'])) {
           $form[$key][$item['#language']][0]['target_id']['#theme_options'] = $theme_option;
         }
+        // One more for cshs module.
+        elseif (isset($form[$key][$item['#language']][0]['tid'])) {
+          $form[$key][$item['#language']][0]['tid']['#theme_options'] = $theme_option;
+        }
         else {
           $form[$key][$item['#language']][0]['#theme_options'] = $theme_option;
         }
