@@ -18,13 +18,13 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_alter().
  */
 function label_help_form_alter(&$form, &$form_state, $form_id) {
-  if ($form_id == 'field_config_edit_form') {
-    return;
-  }
   $children = array_intersect_key($form, array_flip(Element::children($form)));
   foreach ($children as $key => $item) {
     $form_object = $form_state->getFormObject();
     if (!method_exists($form_object, 'getEntity')) {
+      continue;
+    }
+    if (!method_exists($form_object->getEntity(), 'getFieldDefinition')) {
       continue;
     }
     $field = $form_object->getEntity()->getFieldDefinition($key);
