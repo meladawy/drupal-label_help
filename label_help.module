@@ -24,9 +24,15 @@ function label_help_form_alter(&$form, &$form_state, $form_id) {
     if (!method_exists($form_object, 'getEntity')) {
       continue;
     }
-    if (!method_exists($form_object->getEntity(), 'getFieldDefinition')) {
+    $form_entity = $form_object->getEntity();
+    if (!method_exists($form_entity, 'getFieldDefinition')) {
       continue;
     }
+    $method = new ReflectionMethod($form_entity, 'getFieldDefinition');
+    if(!$method->isPublic()) {
+      continue;
+    }
+    $form_entity_get_field_definition_method = new ReflectionMethod($form_entity, 'getFieldDefinition');
     $field = $form_object->getEntity()->getFieldDefinition($key);
 
     $label_help = NULL;
